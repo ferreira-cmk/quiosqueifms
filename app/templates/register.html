@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrar - Painel Administrativo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #3AA655;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .register-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .register-box {
+      background-color: white;
+      padding: 40px 36px 32px 36px;
+      border-radius: 16px;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      width: 100%;
+      max-width: 410px;
+      min-width: 320px;
+      box-sizing: border-box;
+    }
+    .register-box h1 {
+      color: #3AA655;
+      margin-bottom: 6px;
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .register-box p {
+      color: #23853d;
+      margin-bottom: 28px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    form {
+      width: 100%;
+    }
+    .input-group {
+      position: relative;
+      margin-bottom: 18px;
+      width: 100%;
+    }
+    .input-group i {
+      position: absolute;
+      top: 13px;
+      left: 13px;
+      color: #3AA655;
+      font-size: 16px;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px 12px 12px 38px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 15px;
+      background: #f9f9f9;
+      box-sizing: border-box;
+      transition: border 0.22s;
+    }
+    .input-group input:focus {
+      border: 1.5px solid #3AA655;
+      background: #fff;
+    }
+    .btn-register {
+      width: 100%;
+      background-color: #3AA655;
+      border: none;
+      padding: 13px;
+      color: white;
+      font-size: 17px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-bottom: 5px;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(51, 150, 80, 0.04);
+      transition: background 0.22s;
+    }
+    .btn-register:hover {
+      background-color: #328f4a;
+    }
+    .error-message {
+      color: red;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .success-message {
+      color: green;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .login-link {
+      margin-top: 16px;
+      font-size: 15px;
+      display: block;
+    }
+    .login-link a {
+      color: #21863e;
+      font-weight: bold;
+      text-decoration: underline;
+      transition: color 0.18s;
+    }
+    .login-link a:hover {
+      color: #145d27;
+    }
+    @media (max-width: 480px) {
+      .register-box {
+        padding: 24px 8px;
+        min-width: unset;
+        max-width: 99vw;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="register-container">
+    <div class="register-box">
+      <h1>QUIOSQUE ONLINE</h1>
+      <p>Cadastro de novo usuário</p>
+      <form action="/register" method="POST" autocomplete="off">
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" name="nome" placeholder="Nome completo" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-user-circle"></i>
+          <input type="text" name="username" placeholder="Usuário" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" name="senha" placeholder="Senha" required>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="{{ category }}-message">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <button type="submit" class="btn-register">REGISTRAR</button>
+      </form>
+      <div class="login-link">
+        <a href="/login">Já tem cadastro? Entrar</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

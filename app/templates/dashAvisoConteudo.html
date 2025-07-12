@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Conteúdos</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: #f0f0f0; color: #222; display: flex; height: 100vh; transition: background 0.3s, color 0.3s; }
+    body.dark { background-color: #121212; color: #fff; }
+    .sidebar { width: 240px; background-color: #3AA655; padding: 20px; color: white; display: flex; flex-direction: column; }
+    body.dark .sidebar { background-color: #222; color: #fff; }
+    .sidebar h2 { margin-bottom: 40px; font-size: 20px; }
+    .sidebar a { color: white; text-decoration: none; margin-bottom: 15px; padding: 10px; border-radius: 6px; }
+    .sidebar a.active { background-color: #2f894a; }
+    body.dark .sidebar a.active { background: #3AA655; }
+    .content { flex: 1; padding: 40px; position: relative; overflow-y: auto; height: 100vh; background: transparent; }
+    body.dark .content { background: transparent; }
+    .user-icon { position: absolute; top: 20px; right: 30px; font-size: 20px; color: #555; cursor: pointer;}
+    body.dark .user-icon { color: #bbb; }
+    .user-popup {
+      display: none;
+      position: absolute;
+      top: 35px;
+      right: 0;
+      background: #fff;
+      color: #333;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+      padding: 12px 22px 10px 16px;
+      z-index: 10;
+      font-size: 15px;
+      min-width: 130px;
+      border: 1px solid #eee;
+      text-align: left;
+      transition: opacity 0.3s;
+    }
+    body.dark .user-popup { background: #222; color: #fff; border: 1px solid #555; }
+    .user-popup span { color: #6cb86e; font-size: 13px; }
+    h1 { color: #3AA655; margin-bottom: 20px; }
+    body.dark h1 { color: #fff; }
+    form { background-color: white; padding: 20px; border-radius: 10px; max-width: 600px; margin-bottom: 40px; box-shadow: 0 0 10px rgba(0,0,0,0.05);}
+    body.dark form { background: #23272a; color: #eee; box-shadow: 0 0 14px rgba(0,0,0,0.14);}
+    form input, form button { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;}
+    body.dark form input, body.dark form button { background: #181818; color: #fff; border: 1px solid #444;}
+    form button { background-color: #3AA655; color: white; font-weight: bold; cursor: pointer; margin-bottom: 0; border: none; transition: background 0.2s;}
+    form button:hover { background-color: #2f894a; }
+    body.dark form button { background: #3AA655; color: #fff; }
+    .conteudos-lista { padding: 0; margin: 0; display: flex; flex-direction: column; gap: 24px; max-width: 100%; }
+    .conteudo-item { background: #fff; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.04); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 100px;}
+    body.dark .conteudo-item { background: #23272a; color: #eee; box-shadow: 0 0 16px rgba(0,0,0,0.13);}
+    .conteudo-info { flex: 1; min-width: 180px; }
+    .conteudo-img-box { flex: none; width: 180px; display: flex; align-items: center; justify-content: center; min-height: 60px;}
+    .conteudo-img-box img { max-width: 160px; max-height: 60px; object-fit: contain; border-radius: 4px; display: block; background: #eee;}
+    body.dark .conteudo-img-box img { background: #111;}
+    .conteudo-actions { flex: none; min-width: 48px; display: flex; flex-direction: column; align-items: center; gap: 12px; justify-content: center;}
+    .conteudo-actions a, .conteudo-actions button { color: #3AA655; background: none; border: none; font-size: 22px; cursor: pointer; padding: 4px 6px; border-radius: 4px; transition: background 0.18s; outline: none; display: flex; align-items: center; justify-content: center;}
+    .conteudo-actions a:hover, .conteudo-actions button:hover { background: #e5f7ea;}
+    body.dark .conteudo-actions a:hover, body.dark .conteudo-actions button:hover { background: #265C35;}
+    @media (max-width: 800px) {
+      .conteudo-item { flex-direction: column; align-items: flex-start; gap: 10px;}
+      .conteudo-img-box { width: 100%;}
+      .conteudo-actions { width: 100%; flex-direction: row; justify-content: flex-start;}
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head> 
+<body class="{% if dark_mode %}dark{% endif %}">
+
+  <div class="sidebar">
+    <h2>Quiosque Online</h2>
+    <a href="/painel">Início</a>
+    <a href="/conteudos" class="active">Conteúdos</a>
+    <a href="/dispositivos">Dispositivos</a>
+    <a href="/regras">Exibição</a>
+    <a href="/configuracoes">Configurações</a>
+    <a href="/logout">Sair</a>
+  </div>
+
+  <div class="content">
+    <div class="user-icon" id="userIcon">
+      <i class="fas fa-user-circle"></i>
+      <div id="userPopup" class="user-popup">
+        <b>{{ usuario_nome }}</b><br>
+        <span>@{{ usuario_username }}</span>
+      </div>
+    </div>
+    <h1>Conteúdos</h1>
+    <form method="POST">
+      <input type="text" name="titulo" placeholder="Título do conteúdo" required>
+      <input type="text" name="imagem" placeholder="URL ou nome da imagem" required>
+      <input type="text" name="grupo" placeholder="Grupo de exibição (ex: TV01)" required>
+      <button type="submit">Cadastrar</button>
+    </form>
+    <ul class="conteudos-lista">
+      {% for c in conteudos %}
+        <li class="conteudo-item">
+          <div class="conteudo-info">
+            <strong>{{ c.titulo }}</strong><br>
+            <small>Grupo: {{ c.grupo }}</small>
+          </div>
+          <div class="conteudo-img-box">
+            <img src="{{ c.imagem if 'http' in c.imagem else url_for('static', filename=c.imagem) }}" alt="imagem">
+          </div>
+          <div class="conteudo-actions">
+            <a href="{{ url_for('editar_conteudo', id=c.id) }}" title="Editar"><i class="fas fa-pen"></i></a>
+            <form method="POST" action="{{ url_for('deletar_conteudo', id=c.id) }}" style="display:inline;">
+              <button type="submit" title="Remover" onclick="return confirm('Remover este conteúdo?')">
+                <i class="fas fa-trash"></i>
+              </button>
+            </form>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const userIcon = document.getElementById('userIcon');
+      const userPopup = document.getElementById('userPopup');
+      let popupVisible = false;
+      userIcon.onclick = function(e) {
+        e.stopPropagation();
+        popupVisible = !popupVisible;
+        userPopup.style.display = popupVisible ? 'block' : 'none';
+      };
+      document.body.onclick = function() {
+        if (popupVisible) {
+          userPopup.style.display = 'none';
+          popupVisible = false;
+        }
+      };
+    });
+  </script>
+</body>
+</html>

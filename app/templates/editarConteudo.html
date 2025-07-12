@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Conteúdo</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f0f0;
+      color: #222;
+      display: flex;
+      height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark {
+      background-color: #121212;
+      color: #fff;
+    }
+    .sidebar {
+      width: 240px;
+      background-color: #3AA655;
+      padding: 20px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+    }
+    body.dark .sidebar { background-color: #222; color: #fff; }
+    .sidebar h2 { margin-bottom: 40px; font-size: 20px; }
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .sidebar a.active { background-color: #2f894a; }
+    body.dark .sidebar a.active { background: #3AA655; }
+    .content {
+      flex: 1;
+      padding: 40px;
+      position: relative;
+      overflow-y: auto;
+      height: 100vh;
+      background: transparent;
+    }
+    body.dark .content { background: transparent; }
+    .user-icon {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 20px;
+      color: #555;
+    }
+    body.dark .user-icon { color: #bbb; }
+    h1 {
+      color: #3AA655;
+      margin-bottom: 20px;
+    }
+    body.dark h1 { color: #fff; }
+    form {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin-bottom: 40px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      margin-top: 30px;
+    }
+    body.dark form {
+      background: #23272a;
+      color: #eee;
+      box-shadow: 0 0 14px rgba(0,0,0,0.14);
+    }
+    form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 18px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    body.dark form input {
+      background: #181818;
+      color: #fff;
+      border: 1px solid #444;
+    }
+    .botoes {
+      display: flex;
+      gap: 15px;
+      margin-top: 8px;
+    }
+    .btn-save {
+      flex: 1;
+      background-color: #3AA655;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      padding: 10px;
+      font-size: 16px;
+      transition: background 0.2s;
+    }
+    .btn-save:hover { background-color: #2f894a; }
+    .btn-cancel {
+      flex: 1;
+      background-color: #e5e5e5;
+      color: #3AA655;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+      text-align: center;
+    }
+    .btn-cancel:hover { background: #eee; color: #1e662d; }
+    body.dark .btn-cancel {
+      background: #181818;
+      color: #6dcf7d;
+    }
+    body.dark .btn-cancel:hover {
+      background: #23272a;
+      color: #47b15d;
+    }
+    @media (max-width: 800px) {
+      .content { padding: 10px; }
+      form { max-width: 100%; }
+      .botoes { flex-direction: column; gap: 10px; }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="{% if dark_mode %}dark{% endif %}">
+  <div class="sidebar">
+    <h2>Quiosque Online</h2>
+    <a href="/painel">Início</a>
+    <a href="/conteudos" class="active">Conteúdos</a>
+    <a href="/dispositivos">Dispositivos</a>
+    <a href="/regras">Exibição</a>
+    <a href="/configuracoes">Configurações</a>
+    <a href="/logout">Sair</a>
+  </div>
+  <div class="content">
+    <div class="user-icon"><i class="fas fa-user-circle"></i></div>
+    <h1>Editar Conteúdo</h1>
+    <form method="POST">
+      <input type="text" name="titulo" value="{{ conteudo.titulo }}" placeholder="Título do conteúdo" required>
+      <input type="text" name="imagem" value="{{ conteudo.imagem }}" placeholder="URL ou nome da imagem" required>
+      <input type="text" name="grupo" value="{{ conteudo.grupo }}" placeholder="Grupo de exibição (ex: TV01)" required>
+      <div class="botoes">
+        <button type="submit" class="btn-save">Salvar Alterações</button>
+        <a href="/conteudos" class="btn-cancel">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

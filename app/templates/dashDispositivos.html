@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Dispositivos</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f0f0;
+      color: #222;
+      display: flex;
+      height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark {
+      background-color: #121212;
+      color: #fff;
+    }
+    .sidebar {
+      width: 240px;
+      background-color: #3AA655;
+      padding: 20px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+    }
+    body.dark .sidebar {
+      background-color: #222;
+      color: #fff;
+    }
+    .sidebar h2 { margin-bottom: 40px; font-size: 20px; }
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .sidebar a.active { background-color: #2f894a; }
+    body.dark .sidebar a.active { background: #3AA655; }
+
+    .content {
+      flex: 1;
+      padding: 40px;
+      position: relative;
+      overflow-y: auto;
+      height: 100vh;
+      background: transparent;
+    }
+    body.dark .content { background: transparent; }
+
+    .user-icon {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 20px;
+      color: #555;
+      cursor: pointer;
+    }
+    body.dark .user-icon { color: #bbb; }
+    .user-popup {
+      display: none;
+      position: absolute;
+      top: 35px;
+      right: 0;
+      background: #fff;
+      color: #333;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+      padding: 12px 22px 10px 16px;
+      z-index: 10;
+      font-size: 15px;
+      min-width: 130px;
+      border: 1px solid #eee;
+      text-align: left;
+      transition: opacity 0.3s;
+    }
+    body.dark .user-popup { background: #222; color: #fff; border: 1px solid #555; }
+    .user-popup span { color: #6cb86e; font-size: 13px; }
+
+    h1 { color: #3AA655; margin-bottom: 20px; }
+    body.dark h1 { color: #fff; }
+
+    form {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin-bottom: 40px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    body.dark form {
+      background: #23272a;
+      color: #eee;
+      box-shadow: 0 0 14px rgba(0,0,0,0.14);
+    }
+    form input, form button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    body.dark form input, body.dark form button {
+      background: #181818;
+      color: #fff;
+      border: 1px solid #444;
+    }
+    form button {
+      background-color: #3AA655;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 0;
+      border: none;
+      transition: background 0.2s;
+    }
+    form button:hover { background-color: #2f894a; }
+    body.dark form button { background: #3AA655; color: #fff; }
+
+    .dispositivos-lista {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      max-width: 100%;
+      list-style: none;
+    }
+
+    .dispositivo-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.04);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      min-height: 70px;
+      justify-content: space-between;
+      transition: background 0.2s, color 0.2s;
+    }
+    body.dark .dispositivo-card {
+      background: #23272a;
+      color: #eee;
+      box-shadow: 0 0 16px rgba(0,0,0,0.13);
+    }
+
+    .dispositivo-info {
+      flex: 1;
+      min-width: 140px;
+      font-size: 18px;
+    }
+    .dispositivo-info strong {
+      font-size: 20px;
+      color: #222;
+    }
+    .dispositivo-info small {
+      color: #3AA655;
+      font-size: 16px;
+    }
+    body.dark .dispositivo-info strong {
+      color: #fff;
+    }
+    body.dark .dispositivo-info small {
+      color: #65da96;
+    }
+
+    .dispositivo-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      min-width: 48px;
+    }
+    .dispositivo-actions a, .dispositivo-actions button {
+      color: #3AA655;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 4px;
+      transition: background 0.18s;
+      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dispositivo-actions a:hover, .dispositivo-actions button:hover {
+      background: #e5f7ea;
+    }
+    body.dark .dispositivo-actions a:hover, body.dark .dispositivo-actions button:hover {
+      background: #265C35;
+    }
+
+    @media (max-width: 800px) {
+      .content { padding: 10px; }
+      .dispositivo-card { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .dispositivo-actions { flex-direction: row; align-items: center; }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="{% if dark_mode %}dark{% endif %}">
+  <div class="sidebar">
+    <h2>Quiosque Online</h2>
+    <a href="/painel">Início</a>
+    <a href="/conteudos">Conteúdos</a>
+    <a href="/dispositivos" class="active">Dispositivos</a>
+    <a href="/regras">Exibição</a>
+    <a href="/configuracoes">Configurações</a>
+    <a href="/logout">Sair</a>
+  </div>
+
+  <div class="content">
+    <div class="user-icon" id="userIcon">
+      <i class="fas fa-user-circle"></i>
+      <div id="userPopup" class="user-popup">
+        <b>{{ usuario_nome }}</b><br>
+        <span>@{{ usuario_username }}</span>
+      </div>
+    </div>
+    <h1>Grupo de Dispositivos</h1>
+    <form method="POST">
+      <input type="text" name="nome" placeholder="Nome do dispositivo" required>
+      <input type="text" name="ip" placeholder="Endereço IP" required>
+      <button type="submit">Cadastrar</button>
+    </form>
+
+    <ul class="dispositivos-lista">
+      {% for d in dispositivos %}
+      <li class="dispositivo-card">
+        <div class="dispositivo-info">
+          <strong>{{ d.nome }}</strong> <small>({{ d.ip }})</small>
+        </div>
+        <div class="dispositivo-actions">
+          <a href="{{ url_for('editar_dispositivo', id=d.id) }}" title="Editar"><i class="fas fa-pen"></i></a>
+          <form method="POST" action="{{ url_for('deletar_dispositivo', id=d.id) }}" style="display:inline;">
+            <button type="submit" title="Remover" onclick="return confirm('Remover este dispositivo?')">
+              <i class="fas fa-trash"></i>
+            </button>
+          </form>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const userIcon = document.getElementById('userIcon');
+      const userPopup = document.getElementById('userPopup');
+      let popupVisible = false;
+      userIcon.onclick = function(e) {
+        e.stopPropagation();
+        popupVisible = !popupVisible;
+        userPopup.style.display = popupVisible ? 'block' : 'none';
+      };
+      document.body.onclick = function() {
+        if (popupVisible) {
+          userPopup.style.display = 'none';
+          popupVisible = false;
+        }
+      };
+    });
+  </script>
+</body>
+</html>
