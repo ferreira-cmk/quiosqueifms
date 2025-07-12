@@ -1,4 +1,4 @@
-#O PROJETO SE ECONTRA NA BRANCH MASTER PARA A AVALIAÇÃO 
+#O PROJETO SE ENCONTRA NA BRANCH MASTER PARA A AVALIAÇÃO 
 
 Quiosque Online IFMS
 Sistema de exibição de informações em modo quiosque para TVs, computadores da instituição, com painel administrativo web para cadastro e gerenciamento de conteúdos, dispositivos e regras de exibição.
